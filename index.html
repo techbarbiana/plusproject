@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+   
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <script src="https://unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+    <title>SheCodes PLUS PROJECT</title>
+ <style>
+body {
+  font-family: "Poppins", sans-serif;
+  background-image: url("https://s3.amazonaws.com/shecodesio-production/uploads/files/000/146/053/original/pexels-ithalu-907485.jpg?1727944702");
+  background-position: center;
+  background-repeat: 0 repeat;
+  background-size: cover;
+}
+
+.container {
+  margin: 0 auto;
+}
+
+.weather-app {
+ max-width: 976px;
+  background-image: url("https://s3.amazonaws.com/shecodesio-production/uploads/files/000/146/055/original/Dreamscape.jpg?1727945006");
+  background-position: center;
+  background-repeat: 0 repeat;
+  background-size: cover;
+  margin: 0 auto;
+  padding: 56px;
+  background-color: #ffddec;
+  border-radius: 32px;
+  margin-top: 24px; 
+}
+
+input[type="search"] {
+  width: 30%;
+  padding: 20px;
+}
+
+.search-form-input {
+  background-color: rgba(246, 156, 237, 0.4);
+  font-size: 13px;
+  font-weight: 400;
+  border-radius: 100px;
+  height: 44px;
+  padding-right: 24px;
+  border: 0;
+}
+
+.search-form-button {
+  background-color: #ffddff;
+  color: #454444;
+  font-size: 14px;
+  font-weight: 500;
+  outline: 0;
+  border: 0;
+  border-radius: 100px;
+  padding: 12px 24px 12px 24px;
+  height: 44px;
+}
+
+.search-form-button:hover {
+  background-color: #ffeeff;
+}
+
+main {
+  padding: 30px 0;
+}
+
+.weather-app-data {
+  display: flex;
+  justify-content: space-between;
+}
+
+.weather-app-city {
+  font-size: 40px;
+  font-weight: 500;
+  color: #454444;
+  padding: 0;
+  line-height: 44px;
+  margin-bottom: 10px;
+}
+
+.weather-app-details {
+  font-size: 16px;
+  color: rgba(39, 33, 66, 0.4);
+  line-height: 24px;
+  font-weight: 500;
+}
+
+.weather-app-details strong {
+  color: #454444;
+}
+
+.weather-app-temperature-container {
+  display: flex;
+}
+
+.weather-app-icon {
+  width: 100px;
+  height: 100px;
+}
+
+.weather-app-temperature {
+  font-size: 116px;
+  color: #363636;
+  font-weight: 300;
+  padding: 0;
+  line-height: 100px;
+  margin: 0;
+}
+
+.weather-app-unit {
+  font-size: 20px;
+  font-weight: 300;
+  color: #363636;
+  padding: 0;
+}
+
+.weather-forecast {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 30px;
+  background-color: rgba(226, 130, 215, 0.6);
+  padding: 32px 24px 16px 24px;
+  max-width: 100%;
+  border-radius: 20px;
+  max-height: 210px;
+}
+
+.weather-forecast-date {
+  text-align: center;
+  color: rgba(39, 33, 66, 0.5);
+  font-size: 16px;
+  line-height: 20px;
+  margin-bottom: 10px;
+}
+
+.weather-forecast-icon {
+  width: 88px;
+  height: 88px;
+  display: block;
+  margin: 0 auto;
+}
+.weather-forecast-temperatures {
+  text-align: center;
+  color: rgba(39, 33, 66, 0.5);
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.weather-forecast-temperature {
+  padding: 0 10px;
+}
+
+footer {
+  font-size: 14px;
+  font-weight: 400;
+  color: #2c2c2c;
+  align-items: center;
+  padding-top: 8px;
+  margin: 0 auto;
+  width: 50%;
+  text-align: center;
+}
+
+footer > a {
+  color: rgb(105, 18, 105);
+}  
+ </style>
+</head>
+<body>
+  <div class="container">
+   <div class="weather-app">
+      <header>
+        <form class="search-form" id="search-form">
+          <input
+            type="search"
+            placeholder="Enter a city"
+            required
+            id="search-form-input"
+            class="search-form-input"
+          />
+          <input type="submit" value="Search" class="search-form-button" />
+        </form>
+      </header>
+      <main>
+        <div class="weather-app-data">
+          <div>
+            <h1 class="weather-app-city" id="city"></h1>
+            <p class="weather-app-details">
+              <span id="time"></span>,
+              <span id="description"></span>
+              <br />
+              Humidity: <strong id="humidity"></strong>, Wind:
+              <strong id="wind-speed"></strong>
+            </p>
+          </div>
+          <div class="weather-app-temperature-container">
+            <div id="icon"></div>
+            <div class="weather-app-temperature" id="temperature"></div>
+            <div class="weather-app-unit">°C</div>
+          </div>
+        </div>
+        <div class="weather-forecast" id="forecast"></div>
+       </div>
+      </main>
+
+      <footer>
+        This project was coded by
+        <a href="https://github.com/techbarbiana" target="_blank"> Mpho Letsela</a>,
+        is
+        <a href="https://github.com/techbarbiana/weather.application" target="_blank"
+          >open-sourced on GitHub</a
+        >
+        and is
+        <a href="https://plusweatherapplication.netlify.app" target="_blank"
+          >hosted on Netlify</a
+        >
+      </footer>
+    </div>
+<script>
+    function refreshWeather(response) {
+  let temperatureElement = document.querySelector("#temperature");
+  let temperature = response.data.temperature.current;
+  let cityElement = document.querySelector("#city");
+  let descriptionElement = document.querySelector("#description");
+  let humidityElement = document.querySelector("#humidity");
+  let windSpeedElement = document.querySelector("#wind-speed");
+  let timeElement = document.querySelector("#time");
+  let date = new Date(response.data.time * 1000);
+  let iconElement = document.querySelector("#icon");
+
+  cityElement.innerHTML = response.data.city;
+  timeElement.innerHTML = formatDate(date);
+  descriptionElement.innerHTML = response.data.condition.description;
+  humidityElement.innerHTML = `${response.data.temperature.humidity}%`;
+  windSpeedElement.innerHTML = `${response.data.wind.speed}km/h`;
+  temperatureElement.innerHTML = Math.round(temperature);
+  iconElement.innerHTML = `<img src="${response.data.condition.icon_url}" class="weather-app-icon" />`;
+
+  getForecast(response.data.city);
+}
+
+function formatDate(date) {
+  let minutes = date.getMinutes();
+  let hours = date.getHours();
+  let days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  let day = days[date.getDay()];
+
+  if (minutes < 10) {
+    minutes = `0${minutes}`;
+  }
+  
+  if (hours < 10) {
+    hours = `0${hours}`;
+  }
+
+  return `${day} ${hours}:${minutes}`;
+}
+
+function searchCity(city) {
+  let apiKey = "8beee9c371af2b46ffd9dt029273d0o6";
+  let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=metric`;
+  axios.get(apiUrl).then(refreshWeather);
+}
+
+function handleSearchSubmit(event) {
+  event.preventDefault();
+  let searchInput = document.querySelector("#search-form-input");
+
+  searchCity(searchInput.value);
+}
+
+function formatDay(timestamp) {
+  let date = new Date(timestamp * 1000);
+  let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+  return days[date.getDay()];
+}
+
+function getForecast(city) {
+  let apiKey = "8beee9c371af2b46ffd9dt029273d0o6";
+  let apiUrl = `https://api.shecodes.io/weather/v1/forecast?query=${city}&key=${apiKey}&units=metric`;
+  axios(apiUrl).then(displayForecast);
+}
+
+function displayForecast(response) {
+  let forecastHtml = "";
+
+  response.data.daily.forEach(function (day, index) {
+    if (index < 5) {
+      forecastHtml =
+        forecastHtml +
+        `
+      <div class="weather-forecast-day">
+        <div class="weather-forecast-date">${formatDay(day.time)}</div>
+
+        <img src="${day.condition.icon_url}" class="weather-forecast-icon" />
+        <div class="weather-forecast-temperatures">
+          <div class="weather-forecast-temperature">
+            <strong>${Math.round(day.temperature.maximum)}º</strong>
+          </div>
+          <div class="weather-forecast-temperature">${Math.round(
+            day.temperature.minimum
+          )}º</div>
+        </div>
+      </div>
+    `;
+    }
+  });
+
+  let forecastElement = document.querySelector("#forecast");
+  forecastElement.innerHTML = forecastHtml;
+}
+
+let searchFormElement = document.querySelector("#search-form");
+searchFormElement.addEventListener("submit", handleSearchSubmit);
+
+searchCity("Paris");
+</script> 
+</body>
+</html>
